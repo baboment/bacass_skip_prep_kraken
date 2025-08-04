@@ -362,13 +362,18 @@ workflow BACASS {
     ch_kraken_short_multiqc = Channel.empty()
     ch_kraken_long_multiqc  = Channel.empty()
     if ( !params.skip_kraken2 ) {
-        KRAKEN2_DB_PREPARATION (
-            params.kraken2db
-        )
-        ch_versions = ch_versions.mix(KRAKEN2_DB_PREPARATION.out.versions)
+        if (!params.skip_kraken2_db_prep) {
+            KRAKEN2_DB_PREPARATION (
+                params.kraken2db
+            )
+            db_path = KRAKEN2_DB_PREPARATION.out.db.map { info, db -> db }
+            ch_versions = ch_versions.mix(KRAKEN2_DB_PREPARATION.out.versions)
+        } else {
+            db_path = Channel.fromPath(params.kraken2db)
+        }
         KRAKEN2 (
             ch_for_kraken2_short.dump(tag: 'kraken2_short'),
-            KRAKEN2_DB_PREPARATION.out.db.map { info, db -> db }.dump(tag: 'kraken2_db_preparation'),
+            db_path,
             false,
             false
         )
@@ -384,7 +389,7 @@ workflow BACASS {
                     [ info, reads ]
                 }
                 .dump(tag: 'kraken2_long'),
-            KRAKEN2_DB_PREPARATION.out.db.map { info, db -> db }.dump(tag: 'kraken2_db_preparation'),
+            db_path,
             false,
             false
         )

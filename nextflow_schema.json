@@ -210,6 +210,11 @@
                     "fa_icon": "fas fa-forward",
                     "description": "Skip running Kraken2 classifier on reads."
                 },
+                "skip_kraken2_db_prep": {
+                    "type": "boolean",
+                    "fa_icon": "fas fa-forward",
+                    "description": "Use pre-extracted Kraken2 database and skip preparation step"
+                },
                 "skip_kmerfinder": {
                     "type": "boolean",
                     "description": "Skip contamination analysis with [Kmerfinder](https://bitbucket.org/genomicepidemiology/kmerfinder/src/master/)",
