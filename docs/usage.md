@@ -48,6 +48,8 @@ nextflow run nf-core/bacass --input samplesheet.tsv -profile docker --skip_krake
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
 
+If you already have a prepared Kraken2 database, you can bypass the database preparation step by adding the `--skip_kraken2_db_prep` flag. When using this option, the path supplied to `--kraken2db` must point to the directory containing the extracted database files.
+
 Note that the pipeline will create the following files in your working directory:
 
 ```bash
